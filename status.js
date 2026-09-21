@@ -381,7 +381,56 @@
     return out;
   }
 
-  const api = { TZ, wallClock, parseCondition, parseConditional, evalCondition, analyze, openAt, nextFlip, classify };
+  // ── Rede: o que um portão fechado isola ──────────────────────────────────
+  // A tag de um trecho diz se ELE está aberto, não se dá pra chegar nele. O
+  // trecho Jaguaré → Cebolão é `bicycle=designated`, mas fica atrás de um
+  // portão `access=private`: aberto no papel, inalcançável na prática.
+  //
+  // Nível de fechamento: 0 dá pra passar · 1 fechado pelo horário · 2 interditado.
+  // O nível efetivo de uma peça é o pior entre o dela e o do MELHOR caminho até
+  // ela a partir de alguma fonte (minimax: o caminho vale o seu pior elemento,
+  // seja peça ou portão). Fontes são as peças por onde se entra — no app, tudo
+  // que não é o eixo (acessos, passarelas, a outra margem).
+  //
+  //   pieces: [{ id, nodes: [idDeNó…], level, source }]
+  //   gateLevels: Map(idDeNó → nível)   (nó ausente = passagem livre)
+  //   → Map(id → nível efetivo)
+  function levelOf(status) {
+    return status === 'closed' ? 2 : status === 'closed_schedule' ? 1 : 0;
+  }
+
+  function effectiveLevels(pieces, gateLevels) {
+    const byNode = new Map();
+    for (const piece of pieces) {
+      for (const node of piece.nodes) {
+        if (!byNode.has(node)) byNode.set(node, []);
+        byNode.get(node).push(piece);
+      }
+    }
+    const pathLevel = new Map();
+    for (const max of [0, 1]) {
+      const queue = pieces.filter((p) => p.source && p.level <= max);
+      const seen = new Set(queue);
+      while (queue.length) {
+        const piece = queue.pop();
+        if (!pathLevel.has(piece.id)) pathLevel.set(piece.id, max);
+        for (const node of piece.nodes) {
+          if ((gateLevels.get(node) || 0) > max) continue; // portão fechado: não atravessa
+          for (const next of byNode.get(node)) {
+            if (next.level <= max && !seen.has(next)) { seen.add(next); queue.push(next); }
+          }
+        }
+      }
+    }
+    const out = new Map();
+    for (const piece of pieces) {
+      const path = pathLevel.has(piece.id) ? pathLevel.get(piece.id) : 2;
+      out.set(piece.id, Math.max(piece.level, path));
+    }
+    return out;
+  }
+
+  const api = { TZ, wallClock, parseCondition, parseConditional, evalCondition, analyze, openAt, nextFlip, classify, levelOf, effectiveLevels };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.CicloStatus = api;
 })(typeof self !== 'undefined' ? self : this);

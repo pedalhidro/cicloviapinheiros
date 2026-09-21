@@ -31,6 +31,7 @@
   --closed-schedule: #f5b800;
   --closed: #dc2626;
   --unknown: #8b919a;
+  --unpaved: #b9801a; /* UNPAVED no app.js: contorno de chão solto */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -143,7 +144,8 @@ a { color: var(--link); }
 
 .legend li.dim { color: var(--ink-soft); }
 .legend li.legend-head { padding: 0; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
-.legend .swatch { width: 36px; height: 10px; display: block; }
+.legend .swatch { width: 36px; height: 12px; display: block; }
+.legend li.legend-surface { margin-top: 5px; padding-top: 7px; border-top: 1px dashed var(--rule); }
 .legend-km { font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 .fresh {
@@ -189,26 +191,37 @@ a { color: var(--link); }
   .leaflet-bottom { bottom: 46%; }
 }
 
-/* ── mapa: pontas e balões ──────────────────────────────────────────────── */
-.endpoint {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #fbfaf7;
-  border: 3px solid #14202b;
+/* ── mapa: marcadores e balões ──────────────────────────────────────────── */
+/* Bolinha = acesso, quadrado = portão. A cor é o estado (as mesmas do STATUS);
+   o × repete "fechado" pra quem não distingue as cores. */
+.pin, .gate {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2.5px solid #14202b;
+  background: var(--unknown);
+  color: #fff;
+  font: normal 700 13px/1 'IBM Plex Mono', ui-monospace, monospace;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 35%);
 }
 
-.leaflet-tooltip.endpoint-label {
-  font: 600 11.5px 'IBM Plex Mono', ui-monospace, monospace;
-  color: #14202b;
-  background: rgb(251 250 247 / 92%);
-  border: 1px solid #14202b;
-  border-radius: 3px;
-  box-shadow: none;
-  padding: 1px 6px;
-}
+.pin { width: 20px; height: 20px; border-radius: 50%; }
+.gate { width: 15px; height: 15px; border-radius: 3px; font-size: 10px; }
 
-.leaflet-tooltip.endpoint-label::before { display: none; }
+.pin-always, .gate-always { background: var(--always); }
+.pin-open, .gate-open { background: var(--open); }
+.pin-closed_schedule, .gate-closed_schedule { background: var(--closed-schedule); color: #14202b; }
+.pin-closed, .gate-closed { background: var(--closed); }
+
+.mark { display: flex; align-items: center; justify-content: center; }
+.mark .pin, .mark .gate { transition: transform 0.15s; }
+.zoom-far .mark .pin { transform: scale(0.5); color: transparent; box-shadow: none; }
+.zoom-far .mark .gate { transform: scale(0.6); color: transparent; box-shadow: none; }
+
+.legend-marks { display: flex; gap: 3px; align-items: center; }
+.legend-marks .pin { width: 14px; height: 14px; border-width: 2px; box-shadow: none; }
+.legend-marks .gate { width: 12px; height: 12px; border-width: 2px; font-size: 8px; box-shadow: none; }
 
 .leaflet-container { font-family: inherit; }
 .leaflet-popup-content { margin: 12px 14px; font-size: 12.5px; line-height: 1.45; }
@@ -230,6 +243,7 @@ a { color: var(--link); }
 
 .pop-warn { color: #9a3412; overflow-wrap: anywhere; }
 .pop-note { color: #4a5663; font-size: 11.5px; }
+.pop-surface { padding-left: 8px; border-left: 5px solid var(--unpaved); }
 
 .pop-tags {
   margin-top: 10px;

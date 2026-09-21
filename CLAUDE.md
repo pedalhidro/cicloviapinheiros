@@ -35,6 +35,26 @@ aqui. Este arquivo guarda só os invariantes deste repo.
   o histórico do OSM); a hora da consulta vai no `check.json`, gitignored. Por
   isso o deploy é por artefato do Pages, não "from branch". Não ponha
   timestamp volátil dentro do geojson.
+- **O que entra no mapa é regra, não lista** (`fetch_osm.py`): relações + nome
+  + corredor de 150 m do rio; saem ruas e grupos soltos < 1 km. Pedidos do
+  Danilo (2026-09-21): "tirar a Rua Professor Artur Ramos" virou "rua não
+  entra"; "tirar os caminhos pequenos que não ligam na ciclovia" virou a poda
+  por componente conexo. Não troque por lista de ids. O rio muda de nome no
+  OSM (`RIVER_RE`: "Pinheiros|Jurubatuba"): sem o segundo, o corredor para em
+  Santo Amaro.
+- **Portões = alcançabilidade, não tag** (`effectiveLevels` no `status.js`,
+  pedido do Danilo 2026-09-21). Nível 0/1/2; o nível efetivo de uma peça é o
+  pior entre o dela e o do melhor caminho até ela a partir de uma fonte (tudo
+  que não é `trunk`). É isso que pinta Jaguaré → Cebolão de vermelho; NÃO mude
+  a leitura de `access=private` + `bicycle=designated` (= "só bicicleta", é o
+  caso da Ciclovia dos Trabalhadores, com teste). As ways vêm com `nodes` (ids
+  do OSM) justamente pra isso, e o `app.js` corta cada way em peças nos portões.
+- **Ordem de empilhamento: DECISÃO do Danilo (2026-09-21)**: vermelho por cima,
+  depois amarelo, verde, azul (`Z_ORDER` no `app.js`). Sem os pontos
+  Cebolão/Pedreira no mapa (pedido dele): não reintroduzir marcador de ponta.
+- **Espelho atrasado do Overpass** (`MAX_LAG_H`): private.coffee respondeu 200
+  com OSM de 2 e de 4 meses antes, no mesmo dia. Resposta com
+  `timestamp_osm_base` velho é erro, não dado.
 - **Papel `trunk`** = nome do eixo **e** (membro da relação 2029967 **ou**
   ≥ 500 m). O painel soma só o `trunk`. A way 51388704 (Jaguaré → Cebolão) está
   fora da relação: se alguém a dividir em pedaço < 500 m, o pedaço vira
@@ -42,9 +62,11 @@ aqui. Este arquivo guarda só os invariantes deste repo.
 - **`sw.js` `VERSION`** (`ciclopinheiros-vN`, monotônica): subir a cada mudança
   em arquivo servido, com uma linha no comentário do topo. A rodada de dados
   NÃO sobe: `data/*` é network-first.
-- **Cores em dois lugares**: `STATUS` no `app.js` e as variáveis do
+- **Cores em dois lugares**: `STATUS`/`UNPAVED` no `app.js` e as variáveis do
   `style.css`. Mudou uma, muda a outra (e o `icon.svg`). Fechado é sempre
-  tracejado: a cor não pode ser o único sinal (daltonismo).
+  tracejado (linha) ou × (marcador): a cor não pode ser o único sinal
+  (daltonismo). O miolo da linha é o estado; o contorno é o piso (ocre = chão
+  solto). São sinais independentes: não misture.
 - **Sem build, sem CDN**: Leaflet e fontes vendorados em `lib/` (cópia do
   levabici). Sem `package.json`.
 

@@ -200,5 +200,55 @@ test('wallClock devolve a hora de parede de São Paulo (UTC−3)', () => {
   assert.equal(hhmm(S.wallClock(new Date('2026-09-22T01:10:00Z'))), '2026-09-21 22:10');
 });
 
+// ── rede: portões ──────────────────────────────────────────────────────────
+// Eixo A—B—C—D em quatro peças; o acesso entra no nó 2; portão no nó 3.
+//   nós:  1 ──a── 2 ──b── 3 ──c── 4 ──d── 5
+const net = (levels = {}) => [
+  { id: 'a', nodes: [1, 2], level: levels.a || 0, source: false },
+  { id: 'b', nodes: [2, 3], level: levels.b || 0, source: false },
+  { id: 'c', nodes: [3, 4], level: levels.c || 0, source: false },
+  { id: 'd', nodes: [4, 5], level: levels.d || 0, source: false },
+  { id: 'acesso', nodes: [9, 2], level: levels.acesso || 0, source: true },
+];
+const levels = (pieces, gates = []) => Object.fromEntries(S.effectiveLevels(pieces, new Map(gates)));
+
+test('rede sem portão: tudo alcançável fica como está', () => {
+  assert.deepEqual(levels(net()), { a: 0, b: 0, c: 0, d: 0, acesso: 0 });
+});
+
+test('portão interditado isola o que fica atrás (caso Jaguaré → Cebolão)', () => {
+  assert.deepEqual(levels(net(), [[3, 2]]), { a: 0, b: 0, c: 2, d: 2, acesso: 0 });
+});
+
+test('atrás do portão privado é vermelho também à noite, não amarelo', () => {
+  const night = { a: 1, b: 1, c: 1, d: 1 };
+  assert.deepEqual(levels(net(night), [[3, 2]]), { a: 1, b: 1, c: 2, d: 2, acesso: 0 });
+});
+
+test('portão que só fecha à noite deixa amarelo, não vermelho', () => {
+  assert.deepEqual(levels(net(), [[3, 1]]), { a: 0, b: 0, c: 1, d: 1, acesso: 0 });
+});
+
+test('trecho interditado no meio isola o resto do eixo', () => {
+  assert.deepEqual(levels(net({ b: 2 })), { a: 0, b: 2, c: 2, d: 2, acesso: 0 });
+});
+
+test('um segundo acesso do outro lado do portão desfaz o isolamento', () => {
+  const pieces = [...net(), { id: 'acesso2', nodes: [8, 5], level: 0, source: true }];
+  assert.deepEqual(levels(pieces, [[3, 2]]), { a: 0, b: 0, c: 0, d: 0, acesso: 0, acesso2: 0 });
+});
+
+test('acesso interditado não serve de entrada', () => {
+  assert.deepEqual(levels(net({ acesso: 2 })), { a: 2, b: 2, c: 2, d: 2, acesso: 2 });
+});
+
+test('portão na ponta compartilhada não vaza pro vizinho', () => {
+  // o nó 3 é portão fechado e também onde `b` e `c` se tocam: `c` não herda de `b`
+  assert.equal(levels(net(), [[3, 2]]).c, 2);
+  assert.equal(S.levelOf('closed'), 2);
+  assert.equal(S.levelOf('closed_schedule'), 1);
+  assert.equal(S.levelOf('always'), 0);
+});
+
 console.log(failed ? `\n${failed} falha(s)` : '\ntudo ok');
 process.exit(failed ? 1 : 0);

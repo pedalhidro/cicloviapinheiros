@@ -10,6 +10,11 @@ do Cebolão à Usina Elevatória de Pedreira:
 | 🟡 amarelo (tracejado) | fechada agora, reabre pelo horário |
 | 🔴 vermelho (tracejado) | interditada: sem previsão ou até uma data |
 | ⚪ cinza (pontilhado) | o OSM tem uma tag de horário que o site não sabe ler |
+| 🟤 contorno ocre | chão solto (`surface=unpaved`, `gravel`, `dirt`…), qualquer que seja a cor de dentro |
+
+Bolinha é **acesso**, quadrado é **portão**; a cor é o estado e o × repete
+"fechado". Quando as cores se cruzam, o vermelho fica por cima, depois o
+amarelo, o verde e o azul.
 
 A fonte da verdade é o **OpenStreetMap**. Este repositório não guarda horário
 nem interdição nenhuma: copia as tags do OSM a cada 6 h e as interpreta. Se o
@@ -42,11 +47,23 @@ servidor só copia tags, e quem decide a cor é o navegador.
 
 ### O que entra no mapa
 
-As relações [2029967](https://www.openstreetmap.org/relation/2029967) (a
-ciclovia), [5245330](https://www.openstreetmap.org/relation/5245330) (margem
-oeste) e [5245324](https://www.openstreetmap.org/relation/5245324) (ligação),
-**mais** toda way com nome `Ciclovia (do) Rio Pinheiros` entre o Cebolão e
-Pedreira. O nome é necessário porque há trecho fora da relação (ver abaixo).
+Três peneiras, somadas (`tools/fetch_osm.py`):
+
+1. as relações [2029967](https://www.openstreetmap.org/relation/2029967) (a
+   ciclovia), [5245330](https://www.openstreetmap.org/relation/5245330) (margem
+   oeste) e [5245324](https://www.openstreetmap.org/relation/5245324) (ligação);
+2. toda way com nome `Ciclovia (do) Rio Pinheiros` entre o Cebolão e Pedreira
+   (há trecho do eixo fora da relação);
+3. o **corredor do rio**: toda `highway=cycleway`, e todo caminho de pedestre
+   com `bicycle` liberado, a até 150 m do eixo do rio. No OSM o rio muda de nome
+   no caminho: do Guarapiranga a Pedreira ele é "Rio Grande (Jurubatuba-Açú)".
+   **Pra um caminho novo aparecer aqui, basta ele ser `highway=cycleway` na
+   beira do rio.**
+
+Depois saem as **ruas** (só entra `cycleway`, `footway`, `path`, `pedestrian`,
+`steps`, `track`; rua com ciclofaixa fica de fora mesmo sendo membro de relação)
+e os **caminhos soltos**: um grupo de ways que não encosta em nada das peneiras
+1 e 2 só fica se somar 1 km ou mais.
 
 O painel e a coluna de km da legenda contam só o **eixo** da margem leste; o
 resto aparece no mapa com linha mais fina.
@@ -61,6 +78,15 @@ resto aparece no mapa com linha mais fina.
 | interdição com datas | `access:conditional=no @ (2026 Oct 01-2026 Oct 15)` |
 | interdição sem prazo | `access:conditional=no @ (2026 Oct 01+)` ou `bicycle=no` |
 | em obras | `highway=construction` + `construction=cycleway` |
+| portão que barra a passagem | nó `barrier=gate` **em cima da way**, com `access=private` (ou `no`, ou `opening_hours=…`) |
+| chão de terra ou cascalho | `surface=unpaved` (ou `dirt`, `gravel`, `compacted`…) |
+
+**Portões.** A tag de um trecho diz se *ele* está aberto, não se dá pra chegar
+nele. O site liga as ways pelos nós compartilhados e considera que se entra por
+tudo que não é o eixo (acessos, passarelas, a outra margem). Um pedaço do eixo
+que só se alcança atravessando portão fechado, ou trecho interditado, é pintado
+como fechado também; o balão mostra as duas leituras. Portão sem tag de acesso
+não conta pra nada. O nó tem que ser nó **da way**, não um ponto solto ao lado.
 
 Pra interditar só um pedaço, **divida a way** no OSM e ponha a tag no pedaço.
 
@@ -79,12 +105,16 @@ Duas leituras que fogem da letra do wiki, de propósito:
 
 ## Pendências no OSM (em 21/09/2026)
 
-- **Miguel Yunes → Pedreira não está mapeado** (~1,2 km). O site mostra o buraco
-  em pontilhado cinza, com link pra mapear.
+- **Miguel Yunes → Pedreira**: a ciclovia oficial não está mapeada nesse
+  pedaço (~1,2 km); o que chega perto de Pedreira é a Estrada do Parque
+  Jurubatuba, de terra, na outra margem.
 - A way [51388704](https://www.openstreetmap.org/way/51388704) (Jaguaré →
   Cebolão, 3,4 km) está **fora da relação** 2029967. Entra aqui pelo nome, mas
-  o certo é incluí-la na relação.
-- Todas as ways do eixo carregam `temporary:access=no @ (2021-08-18 - 2021-12-31)`,
+  o certo é incluí-la na relação. Ela aparece vermelha por causa do portão
+  `access=private` do Jaguaré (nó 6405277243), não pelas tags dela:
+  `access=private` + `bicycle=designated` quer dizer "só bicicleta", igual à
+  Ciclovia dos Trabalhadores.
+- Todo o eixo ainda carrega `temporary:access=no @ (2021-08-18 - 2021-12-31)`,
   vencida e com data fora do padrão do `opening_hours`. Não atrapalha; pode sair.
 - A way [841967007](https://www.openstreetmap.org/way/841967007) (Ciclovia dos
   Trabalhadores) tem o horário só na `note` ("07:00 às 19:00"): no mapa sai azul.

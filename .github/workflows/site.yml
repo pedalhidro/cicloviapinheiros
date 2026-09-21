@@ -21,8 +21,15 @@
 #      gh api -X POST repos/pedalhidro/cicloviapinheiros/pages -f build_type=workflow
 #      gh api -X PUT  repos/pedalhidro/cicloviapinheiros/pages -f cname=ciclopinheiros.pedalhidrografi.co
 # 2) DNS na Cloudflare (zona pedalhidrografi.co):
-#      CNAME  ciclopinheiros → pedalhidro.github.io   (nuvem CINZA / "DNS only"
-#      até o GitHub emitir o certificado; depois marque "Enforce HTTPS" no Pages)
+#      CNAME  ciclopinheiros → pedalhidro.github.io   (nuvem CINZA / "DNS only")
+# 3) Certificado. O GitHub só PEDE o certificado se o DNS já resolve na hora em
+#    que o domínio é salvo. Salvando o domínio antes do CNAME (a ordem segura
+#    contra sequestro de subdomínio), o pedido nunca sai: `https_certificate`
+#    fica null pra sempre. Foi o que aconteceu em 2026-09-21; o conserto é
+#    limpar e salvar de novo com o DNS no ar (saiu "approved" em 20 s):
+#      echo '{"cname":null}' | gh api -X PUT repos/pedalhidro/cicloviapinheiros/pages --input -
+#      gh api -X PUT repos/pedalhidro/cicloviapinheiros/pages -f cname=ciclopinheiros.pedalhidrografi.co
+#      gh api -X PUT repos/pedalhidro/cicloviapinheiros/pages -F https_enforced=true
 #
 # ATENÇÃO: o GitHub desliga crons de repositório sem atividade por 60 dias
 # (avisa por e-mail antes). Qualquer commit — inclusive o de dados — zera a

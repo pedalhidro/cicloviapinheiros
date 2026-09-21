@@ -15,7 +15,11 @@
 //
 // v1 — primeira versão: mapa de estado (24 h / aberta / fechada pelo horário /
 //      interditada) a partir das tags do OSM.
-const VERSION = 'ciclopinheiros-v1';
+// v2 — corredor do rio (passarelas, estradas de terra da beira-rio), contorno
+//      ocre no chão solto, portões (o que fica atrás de portão fechado fecha
+//      junto), acessos como marcadores, vermelho sempre por cima; saem as
+//      pontas Cebolão/Pedreira e as ruas.
+const VERSION = 'ciclopinheiros-v2';
 const STATIC_CACHE = `${VERSION}-static`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 
