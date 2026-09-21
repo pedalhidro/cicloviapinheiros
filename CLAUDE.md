@@ -35,11 +35,14 @@ aqui. Este arquivo guarda só os invariantes deste repo.
   o histórico do OSM); a hora da consulta vai no `check.json`, gitignored. Por
   isso o deploy é por artefato do Pages, não "from branch". Não ponha
   timestamp volátil dentro do geojson.
-- **O que entra no mapa é regra, não lista** (`fetch_osm.py`): relações + nome
-  + corredor de 150 m do rio; saem ruas e grupos soltos < 1 km. Pedidos do
-  Danilo (2026-09-21): "tirar a Rua Professor Artur Ramos" virou "rua não
-  entra"; "tirar os caminhos pequenos que não ligam na ciclovia" virou a poda
-  por componente conexo. Não troque por lista de ids. O rio muda de nome no
+- **O que entra no mapa: regra primeiro, lista de exclusão por último**
+  (`fetch_osm.py`): relações + nome + corredor de 150 m do rio; saem ruas e
+  grupos soltos < 1 km. Pedidos do Danilo (2026-09-21): "tirar a Rua Professor
+  Artur Ramos" virou "rua não entra"; "tirar os caminhos pequenos que não ligam
+  na ciclovia" virou a poda por componente conexo. Quando ele aponta ways que
+  nenhuma tag separa das que ficam, vão pro `EXCLUDE_WAYS` (curadoria dele; é
+  seleção, não dado — estado continua vindo só do OSM). Depois de excluir, rode
+  e veja o que a poda levou junto. A relação 5245324 saiu por isso. O rio muda de nome no
   OSM (`RIVER_RE`: "Pinheiros|Jurubatuba"): sem o segundo, o corredor para em
   Santo Amaro.
 - **Portões = alcançabilidade, não tag** (`effectiveLevels` no `status.js`,

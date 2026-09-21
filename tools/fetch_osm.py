@@ -52,7 +52,9 @@ USER_AGENT = "cicloviapinheiros/1.0 (+https://ciclopinheiros.pedalhidrografi.co;
 # O que entra no mapa. Relações:
 #   2029967  Ciclovia do Rio Pinheiros (tronco + acessos, margem leste)
 #   5245330  Ciclovia Rio Pinheiros - Margem Oeste (Parque Bruno Covas etc.)
-#   5245324  Ciclopassarela da Marginal Pinheiros e Ciclovia de Ligação
+# (A 5245324, "Ciclopassarela da Marginal Pinheiros e Ciclovia de Ligação", saiu:
+# tirando a rua e a way 218402980 — ver EXCLUDE_WAYS — sobravam tocos de 2, 3 e
+# 30 m. O que dela encosta no rio continua entrando pelo corredor.)
 # MAIS toda way com o nome da ciclovia dentro da caixa Cebolão ↔ Pedreira: o
 # trecho Jaguaré → Cebolão (way 51388704) e vários acessos NÃO estão na relação,
 # então só a relação não basta.
@@ -62,7 +64,22 @@ USER_AGENT = "cicloviapinheiros/1.0 (+https://ciclopinheiros.pedalhidrografi.co;
 # de terra da beira-rio (Parque Jurubatuba, a margem oposta até o Cebolão) —
 # nada disso é membro de relação nem leva o nome da ciclovia. Pra um caminho
 # novo aparecer no mapa, basta ele ser `highway=cycleway` na beira do rio.
-RELATIONS = {2029967: "trunk", 5245330: "west", 5245324: "link"}
+RELATIONS = {2029967: "trunk", 5245330: "west"}
+
+# Curadoria do Danilo (2026-09-21): caminhos que o corredor do rio pega mas que
+# NÃO fazem parte deste mapa — a continuação do acesso do Parque do Povo pro lado
+# da cidade (rumo à Faria Lima), a calçada em volta do parque e a Passarela dos
+# Estudantes. Nenhuma tag os separa das ligações que ficam, então é lista mesmo.
+# O que só se ligava ao mapa através deles cai sozinho na poda (prune_loose).
+# Pra tirar mais um: acrescente o id aqui. Pra voltar atrás: apague a linha.
+EXCLUDE_WAYS = {
+    419504676,   # ciclovia de 183 m na altura da Cidade Jardim (lado da cidade)
+    228077212,   # calçada de 32 m ligada à de cima
+    172413614,   # calçada de 973 m em volta do Parque do Povo
+    218402980,   # "Ciclovia de Ligação", 372 m (era da relação 5245324)
+    1395347292,  # 93 m entre o acesso do Parque do Povo e a ligação
+    228078144,   # Passarela dos Estudantes (Cidade Universitária)
+}
 BBOX = (-23.715, -46.78, -23.50, -46.65)  # sul (logo abaixo de Pedreira), oeste, norte, leste
 NAME_RE = r"Ciclovia (do )?Rio Pinheiros"
 CORRIDOR_M = 150  # o rio tem ~90 m de largura; as pistas ficam no topo do talude
@@ -218,6 +235,8 @@ def build_features(data):
         tags = el.get("tags", {})
         if not is_path(tags):
             continue  # rua, ou prédio/área que por acaso leva o nome da ciclovia
+        if el["id"] in EXCLUDE_WAYS:
+            continue
         if el["id"] in membership or re.search(NAME_RE, tags.get("name", ""), re.I):
             chosen.add(el["id"])
         coords = [[round(p["lon"], 7), round(p["lat"], 7)] for p in el["geometry"]]

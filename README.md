@@ -50,8 +50,8 @@ servidor só copia tags, e quem decide a cor é o navegador.
 Três peneiras, somadas (`tools/fetch_osm.py`):
 
 1. as relações [2029967](https://www.openstreetmap.org/relation/2029967) (a
-   ciclovia), [5245330](https://www.openstreetmap.org/relation/5245330) (margem
-   oeste) e [5245324](https://www.openstreetmap.org/relation/5245324) (ligação);
+   ciclovia) e [5245330](https://www.openstreetmap.org/relation/5245330) (margem
+   oeste);
 2. toda way com nome `Ciclovia (do) Rio Pinheiros` entre o Cebolão e Pedreira
    (há trecho do eixo fora da relação);
 3. o **corredor do rio**: toda `highway=cycleway`, e todo caminho de pedestre
@@ -64,6 +64,11 @@ Depois saem as **ruas** (só entra `cycleway`, `footway`, `path`, `pedestrian`,
 `steps`, `track`; rua com ciclofaixa fica de fora mesmo sendo membro de relação)
 e os **caminhos soltos**: um grupo de ways que não encosta em nada das peneiras
 1 e 2 só fica se somar 1 km ou mais.
+
+Por fim, uma lista curta de exclusão à mão (`EXCLUDE_WAYS` no `fetch_osm.py`):
+caminhos que o corredor pega mas que não são deste mapa, como a continuação do
+acesso do Parque do Povo pro lado da cidade. É seleção, não dado: horário e
+interdição continuam vindo só do OSM.
 
 O painel e a coluna de km da legenda contam só o **eixo** da margem leste; o
 resto aparece no mapa com linha mais fina.
