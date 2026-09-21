@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- o rio em S, pintado com os quatro estados do mapa -->
+  <rect width="512" height="512" rx="96" fill="#14202b"/>
+  <g fill="none" stroke-linecap="butt" stroke-width="56">
+    <path d="M176 64 C176 128 210 150 232 176" stroke="#1f6fe0"/>
+    <path d="M232 176 C262 212 330 226 330 292" stroke="#17a34a"/>
+    <path d="M330 292 C330 340 292 356 268 384" stroke="#f5b800"/>
+    <path d="M268 384 C250 406 250 426 250 448" stroke="#dc2626"/>
+  </g>
+  <circle cx="176" cy="64" r="22" fill="#fbfaf7" stroke="#14202b" stroke-width="10"/>
+  <circle cx="250" cy="448" r="22" fill="#fbfaf7" stroke="#14202b" stroke-width="10"/>
+</svg>

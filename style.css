@@ -1,0 +1,244 @@
+/* cicloviapinheiros — folha única, sem build. IBM Plex Mono vendorada (a
+   mesma do levabici/datahidro); nada de CDN. */
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('lib/fonts/ibm-plex-mono-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('lib/fonts/ibm-plex-mono-600.woff2') format('woff2');
+}
+
+:root {
+  --ink: #14202b;
+  --ink-soft: #4a5663;
+  --paper: #fbfaf7;
+  --rule: #dcd8cf;
+  --link: #0b5cad;
+  --warn: #9a3412;
+
+  /* as mesmas cores do STATUS no app.js */
+  --always: #1f6fe0;
+  --open: #17a34a;
+  --closed-schedule: #f5b800;
+  --closed: #dc2626;
+  --unknown: #8b919a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #eef1f4;
+    --ink-soft: #a9b3be;
+    --paper: #14202b;
+    --rule: #2c3a48;
+    --link: #7cc0ff;
+    --warn: #fdba74;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+a { color: var(--link); }
+
+#map {
+  position: fixed;
+  inset: 0;
+  background: #e8e6e0;
+}
+
+/* Base quase cinza: a cor fica só pra ciclovia. */
+.basemap { filter: grayscale(0.85) contrast(0.92) brightness(1.04); }
+
+/* ── painel ─────────────────────────────────────────────────────────────── */
+#panel {
+  position: fixed;
+  z-index: 1000;
+  top: 12px;
+  left: 12px;
+  width: 348px;
+  max-height: calc(100% - 24px);
+  overflow: auto;
+  padding: 14px 16px 12px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  box-shadow: 0 2px 14px rgb(0 0 0 / 22%);
+}
+
+#panel h1 {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.headline {
+  margin: 0;
+  padding-left: 12px;
+  border-left: 6px solid var(--unknown);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.headline[data-status='always'] { border-color: var(--always); }
+.headline[data-status='open'] { border-color: var(--open); }
+.headline[data-status='closed_schedule'] { border-color: var(--closed-schedule); }
+.headline[data-status='closed'] { border-color: var(--closed); }
+.headline[data-status='mixed'] { border-image: linear-gradient(var(--open) 50%, var(--closed) 50%) 1; }
+
+.subline {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.simulated {
+  margin: 8px 0 0;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: var(--warn);
+  border: 1px dashed var(--warn);
+  border-radius: 4px;
+}
+
+.legend {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 10px 0 0;
+  border-top: 1px solid var(--rule);
+}
+
+.legend li {
+  display: grid;
+  grid-template-columns: 36px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 3px 0;
+  font-size: 12.5px;
+}
+
+.legend li.dim { color: var(--ink-soft); }
+.legend li.legend-head { padding: 0; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
+.legend .swatch { width: 36px; height: 10px; display: block; }
+.legend-km { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.fresh {
+  margin: 10px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--rule);
+  font-size: 11.5px;
+  color: var(--ink-soft);
+}
+
+.fresh.warn { color: var(--warn); }
+
+.about { margin-top: 8px; font-size: 12.5px; }
+.about summary { cursor: pointer; color: var(--link); padding: 4px 0; }
+.about p { margin: 8px 0 0; }
+.about code { font-size: 0.95em; background: rgb(127 127 127 / 16%); padding: 0 3px; border-radius: 3px; overflow-wrap: anywhere; }
+.about .credits { color: var(--ink-soft); font-size: 11.5px; }
+
+.noscript {
+  position: fixed;
+  z-index: 2000;
+  inset: auto 12px 12px;
+  padding: 12px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+}
+
+/* Celular: o painel vira uma gaveta embaixo; o mapa fica com o topo. */
+@media (max-width: 719px) {
+  #panel {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    max-height: 46%;
+    padding: 12px 16px calc(10px + env(safe-area-inset-bottom));
+    border-width: 1px 0 0;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .headline { font-size: 17px; }
+  .leaflet-bottom { bottom: 46%; }
+}
+
+/* ── mapa: pontas e balões ──────────────────────────────────────────────── */
+.endpoint {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fbfaf7;
+  border: 3px solid #14202b;
+}
+
+.leaflet-tooltip.endpoint-label {
+  font: 600 11.5px 'IBM Plex Mono', ui-monospace, monospace;
+  color: #14202b;
+  background: rgb(251 250 247 / 92%);
+  border: 1px solid #14202b;
+  border-radius: 3px;
+  box-shadow: none;
+  padding: 1px 6px;
+}
+
+.leaflet-tooltip.endpoint-label::before { display: none; }
+
+.leaflet-container { font-family: inherit; }
+.leaflet-popup-content { margin: 12px 14px; font-size: 12.5px; line-height: 1.45; }
+
+.pop h2 { margin: 0 0 6px; font-size: 14px; font-weight: 600; }
+.pop p { margin: 6px 0 0; }
+.pop-role { margin: 0 0 2px !important; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: #4a5663; }
+
+.pop-status {
+  padding-left: 8px;
+  border-left: 5px solid var(--unknown);
+  font-weight: 600;
+}
+
+.pop-status[data-status='always'] { border-color: var(--always); }
+.pop-status[data-status='open'] { border-color: var(--open); }
+.pop-status[data-status='closed_schedule'] { border-color: var(--closed-schedule); }
+.pop-status[data-status='closed'] { border-color: var(--closed); }
+
+.pop-warn { color: #9a3412; overflow-wrap: anywhere; }
+.pop-note { color: #4a5663; font-size: 11.5px; }
+
+.pop-tags {
+  margin-top: 10px;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+}
+
+.pop-tags caption { text-align: left; color: #4a5663; padding-bottom: 2px; }
+.pop-tags th, .pop-tags td { text-align: left; vertical-align: top; padding: 2px 0; border-top: 1px solid #e5e2da; overflow-wrap: anywhere; }
+.pop-tags th { font-weight: 400; color: #4a5663; padding-right: 10px; white-space: nowrap; }
+.pop-links { font-size: 11.5px; }

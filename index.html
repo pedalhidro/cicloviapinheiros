@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>A Ciclovia do Rio Pinheiros está aberta?</title>
+  <meta name="description" content="Mapa do estado da Ciclovia do Rio Pinheiros, do Cebolão à Usina Elevatória de Pedreira: aberta 24 h, aberta agora, fechada pelo horário ou interditada. Fonte: OpenStreetMap, verificado a cada 6 horas.">
+  <meta name="theme-color" content="#14202b">
+  <meta property="og:title" content="A Ciclovia do Rio Pinheiros está aberta?">
+  <meta property="og:description" content="Estado de cada trecho agora, direto do OpenStreetMap.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ciclopinheiros.pedalhidrografi.co/">
+  <meta property="og:locale" content="pt_BR">
+  <link rel="canonical" href="https://ciclopinheiros.pedalhidrografi.co/">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="lib/leaflet/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="map" aria-label="Mapa da Ciclovia do Rio Pinheiros"></main>
+
+  <section id="panel" aria-live="polite">
+    <h1>Ciclovia do Rio Pinheiros</h1>
+    <p id="headline" class="headline" data-status="loading">Carregando…</p>
+    <p id="subline" class="subline"></p>
+    <p id="simulated" class="simulated" hidden></p>
+
+    <ul id="legend" class="legend" aria-label="Legenda"></ul>
+
+    <p id="fresh" class="fresh"></p>
+
+    <details class="about">
+      <summary>Como isso funciona</summary>
+      <p>
+        A fonte da verdade é o <a href="https://www.openstreetmap.org/relation/2029967" target="_blank" rel="noopener">OpenStreetMap</a>.
+        A cada 6 horas este site copia de lá o traçado e as tags da ciclovia; o
+        estado de cada trecho é calculado aqui, no seu aparelho, com o relógio de
+        São Paulo, e se atualiza sozinho a cada minuto.
+      </p>
+      <p>
+        Horário vem de <code>opening_hours</code> ou de
+        <code>bicycle:conditional</code> (ex.: <code>yes @ (05:30-18:30)</code>).
+        Interdição vem de <code>bicycle=no</code>, de <code>highway=construction</code>
+        ou de uma condicional com data (ex.:
+        <code>access:conditional=no @ (2026 Oct 01-2026 Oct 15)</code>).
+        Trecho sem nenhuma dessas tags conta como aberto 24 h.
+      </p>
+      <p>
+        <strong>Viu algo errado?</strong> Toque no trecho e use “editar no OSM”.
+        Corrigindo lá, o mapa daqui se corrige na próxima rodada, e todo app
+        que usa o OSM se corrige junto.
+      </p>
+      <p class="credits">
+        Um mapa do <a href="https://pedalhidrografi.co" target="_blank" rel="noopener">Pedal Hidrográfico</a>.
+        Sem vínculo com a operadora da ciclovia. Código aberto (GPL-3.0) em
+        <a href="https://github.com/pedalhidro/cicloviapinheiros" target="_blank" rel="noopener">github.com/pedalhidro/cicloviapinheiros</a>.
+      </p>
+    </details>
+  </section>
+
+  <noscript>
+    <p class="noscript">Este mapa precisa de JavaScript. O dado bruto está em
+    <a href="data/ciclovia.geojson">data/ciclovia.geojson</a>.</p>
+  </noscript>
+
+  <script src="lib/leaflet/leaflet.js"></script>
+  <script src="status.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

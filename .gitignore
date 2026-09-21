@@ -1,0 +1,7 @@
+# escrito a cada rodada do tools/fetch_osm.py; publicado pelo workflow sem commit
+data/check.json
+*.tmp
+
+__pycache__/
+_site/
+.env

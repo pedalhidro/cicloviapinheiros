@@ -1,0 +1,112 @@
+# Atualiza os dados do OSM e publica o site no GitHub Pages.
+#
+# Roda a cada 6 h (cron), a cada push na main e pelo botão da aba Actions.
+# Toda rodada: testa o status.js → consulta o Overpass → publica.
+#
+#   * data/ciclovia.geojson só é COMMITADO quando as feições mudam: o
+#     `git log data/` vira o registro de quando o OSM mudou de verdade, sem
+#     4 commits de ruído por dia.
+#   * data/check.json (quando foi a última consulta, e se deu certo) é
+#     gitignored e vai só no artefato publicado — por isso o deploy é por
+#     artefato (upload-pages-artifact), não "deploy from branch".
+#   * Overpass fora do ar NÃO derruba o site: publica o retrato anterior com
+#     check.json ok=false (o painel avisa) e só DEPOIS marca a rodada como
+#     falha, pra chegar o e-mail do GitHub.
+#
+# O push feito aqui usa o GITHUB_TOKEN, que por regra do GitHub não dispara
+# outro workflow — não há laço.
+#
+# ── Configuração, uma vez só ────────────────────────────────────────────────
+# 1) Pages servido por workflow + domínio:
+#      gh api -X POST repos/pedalhidro/cicloviapinheiros/pages -f build_type=workflow
+#      gh api -X PUT  repos/pedalhidro/cicloviapinheiros/pages -f cname=ciclopinheiros.pedalhidrografi.co
+# 2) DNS na Cloudflare (zona pedalhidrografi.co):
+#      CNAME  ciclopinheiros → pedalhidro.github.io   (nuvem CINZA / "DNS only"
+#      até o GitHub emitir o certificado; depois marque "Enforce HTTPS" no Pages)
+#
+# ATENÇÃO: o GitHub desliga crons de repositório sem atividade por 60 dias
+# (avisa por e-mail antes). Qualquer commit — inclusive o de dados — zera a
+# contagem; se o OSM ficar 2 meses sem mudar, reative na aba Actions.
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: Atualiza e publica
+
+on:
+  schedule:
+    - cron: '17 */6 * * *' # fora da hora cheia, quando a fila do Actions atrasa
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+# Uma rodada por vez: duas juntas brigariam pelo push e pelo deploy.
+concurrency:
+  group: site
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # commit do geojson
+    outputs:
+      fetch: ${{ steps.fetch.outcome }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Testa o status.js
+        run: node test-status.mjs
+
+      - name: Consulta o OSM (Overpass)
+        id: fetch
+        continue-on-error: true
+        run: python3 tools/fetch_osm.py
+
+      - name: Commita o geojson se o OSM mudou
+        if: steps.fetch.outcome == 'success'
+        run: |
+          # porcelain (e não `git diff`) pra também pegar o arquivo ainda não rastreado
+          if [ -z "$(git status --porcelain -- data/ciclovia.geojson)" ]; then
+            echo "OSM sem mudança."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/ciclovia.geojson
+          git commit -m "dados: o OSM mudou ($(date -u +%Y-%m-%dT%H:%MZ))"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      # Lista explícita: tools/, testes, assets/ e docs ficam fora do site.
+      - name: Monta o site
+        run: |
+          mkdir -p _site
+          cp index.html style.css status.js app.js sw.js manifest.webmanifest \
+             icon.svg icon-192.png icon-512.png _site/
+          cp -r lib data _site/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Acusa a falha do Overpass (o site já foi publicado)
+        if: needs.build.outputs.fetch != 'success'
+        run: |
+          echo "::error::A consulta ao Overpass falhou; o site segue com o retrato anterior."
+          exit 1
