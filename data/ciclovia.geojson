@@ -1,7 +1,7 @@
 {
  "type": "FeatureCollection",
  "meta": {
-  "changed_at": "2026-09-21T21:51:54Z",
+  "changed_at": "2026-09-22T04:57:51Z",
   "attribution": "© OpenStreetMap contributors (ODbL)",
   "source": "Overpass API",
   "query": "[out:json][timeout:90];\nrel(id:2029967,5245330)->.rels;\n.rels out body;\nway[\"waterway\"~\"^(river|canal)$\"][\"name\"~\"Pinheiros|Jurubatuba\",i](-23.715,-46.78,-23.5,-46.65)->.rio;\n(\n  way[\"highway\"=\"cycleway\"](-23.715,-46.78,-23.5,-46.65);\n  way[\"highway\"~\"^(footway|path|pedestrian|steps)$\"][\"bicycle\"~\"^(yes|designated|dismount|permissive)$\"](-23.715,-46.78,-23.5,-46.65);\n)->.cand;\n(\n  way(r.rels);\n  way[\"name\"~\"Ciclovia (do )?Rio Pinheiros\",i](-23.715,-46.78,-23.5,-46.65);\n  way.cand(around.rio:150);\n)->.sel;\n.sel out meta geom;\nnode(w.sel)[\"barrier\"];\nout meta;\n"
@@ -1004,7 +1004,7 @@
     "way": 51392253,
     "role": "trunk",
     "length_m": 6982,
-    "edited_at": "2026-04-20T15:09:30Z",
+    "edited_at": "2026-09-22T01:46:19Z",
     "tags": {
      "bicycle": "designated",
      "bicycle:conditional": "yes @ (05:30-18:30)",
@@ -1139,6 +1139,7 @@
      12173905477,
      656094907,
      1749725678,
+     14205369367,
      656094908,
      656094909,
      1749725687,
@@ -1636,6 +1637,10 @@
       -23.6397244
      ],
      [
+      -46.7236499,
+      -23.639845
+     ],
+     [
       -46.723892,
       -23.640114
      ],
@@ -2097,54 +2102,6 @@
   },
   {
    "type": "Feature",
-   "id": "way/163501166",
-   "properties": {
-    "way": 163501166,
-    "role": "link",
-    "length_m": 29,
-    "edited_at": "2021-08-20T21:40:21Z",
-    "tags": {
-     "bicycle": "yes",
-     "covered": "yes",
-     "highway": "footway",
-     "layer": "1"
-    },
-    "nodes": [
-     4183657838,
-     9023665048,
-     2367184953,
-     2367184959,
-     1751728872
-    ]
-   },
-   "geometry": {
-    "type": "LineString",
-    "coordinates": [
-     [
-      -46.7109795,
-      -23.6636505
-     ],
-     [
-      -46.7109083,
-      -23.663626
-     ],
-     [
-      -46.7108391,
-      -23.663603
-     ],
-     [
-      -46.7107708,
-      -23.663581
-     ],
-     [
-      -46.7107071,
-      -23.6635668
-     ]
-    ]
-   }
-  },
-  {
-   "type": "Feature",
    "id": "way/163503067",
    "properties": {
     "way": 163503067,
@@ -2216,39 +2173,6 @@
      [
       -46.6966926,
       -23.6046989
-     ]
-    ]
-   }
-  },
-  {
-   "type": "Feature",
-   "id": "way/163514668",
-   "properties": {
-    "way": 163514668,
-    "role": "link",
-    "length_m": 5,
-    "edited_at": "2021-07-27T05:39:07Z",
-    "tags": {
-     "bicycle": "yes",
-     "bridge": "viaduct",
-     "highway": "footway",
-     "layer": "1"
-    },
-    "nodes": [
-     1751860569,
-     8953028606
-    ]
-   },
-   "geometry": {
-    "type": "LineString",
-    "coordinates": [
-     [
-      -46.6910964,
-      -23.5853327
-     ],
-     [
-      -46.6910581,
-      -23.5853067
      ]
     ]
    }
@@ -2332,43 +2256,6 @@
      [
       -46.6922661,
       -23.5939922
-     ]
-    ]
-   }
-  },
-  {
-   "type": "Feature",
-   "id": "way/228077208",
-   "properties": {
-    "way": 228077208,
-    "role": "link",
-    "length_m": 8,
-    "edited_at": "2021-08-13T19:20:58Z",
-    "tags": {
-     "bicycle": "yes",
-     "covered": "yes",
-     "highway": "footway"
-    },
-    "nodes": [
-     2367231133,
-     2367231135,
-     1751860569
-    ]
-   },
-   "geometry": {
-    "type": "LineString",
-    "coordinates": [
-     [
-      -46.6911652,
-      -23.5853713
-     ],
-     [
-      -46.6911212,
-      -23.5853468
-     ],
-     [
-      -46.6910964,
-      -23.5853327
      ]
     ]
    }
@@ -3115,16 +3002,16 @@
     "way": 340296380,
     "role": "link",
     "length_m": 408,
-    "edited_at": "2023-12-05T19:42:48Z",
+    "edited_at": "2026-09-22T01:46:19Z",
     "tags": {
      "bicycle": "designated",
      "bridge": "yes",
      "est_width": "3",
      "foot": "designated",
-     "highway": "footway",
+     "highway": "cycleway",
      "layer": "1",
      "lit": "yes",
-     "name": "Passarela de Pedestres da Ponte Cidade Universitária",
+     "name": "Passarela da Ponte Cidade Universitária",
      "oneway": "no",
      "segregated": "yes",
      "source": "https://foursquare.com/v/ponte-cidade-universit%C3%A1ria/4d545bdb48ea6ea8817ac9a3/photos",
@@ -3619,8 +3506,8 @@
    "properties": {
     "way": 413123318,
     "role": "link",
-    "length_m": 22,
-    "edited_at": "2021-07-07T20:18:16Z",
+    "length_m": 30,
+    "edited_at": "2026-09-22T01:46:19Z",
     "tags": {
      "bicycle": "yes",
      "bridge": "yes",
@@ -3629,6 +3516,7 @@
      "layer": "1"
     },
     "nodes": [
+     14205369362,
      2367176643,
      2367176630,
      1751723666,
@@ -3638,6 +3526,10 @@
    "geometry": {
     "type": "LineString",
     "coordinates": [
+     [
+      -46.7024073,
+      -23.6774998
+     ],
      [
       -46.7023449,
       -23.6774527
@@ -3653,53 +3545,6 @@
      [
       -46.7021916,
       -23.6773165
-     ]
-    ]
-   }
-  },
-  {
-   "type": "Feature",
-   "id": "way/417884778",
-   "properties": {
-    "way": 417884778,
-    "role": "link",
-    "length_m": 17,
-    "edited_at": "2021-08-13T19:20:58Z",
-    "tags": {
-     "bicycle": "yes",
-     "covered": "yes",
-     "highway": "footway"
-    },
-    "nodes": [
-     8953028600,
-     8944022448,
-     8944022449,
-     4183572276,
-     2367231133
-    ]
-   },
-   "geometry": {
-    "type": "LineString",
-    "coordinates": [
-     [
-      -46.6912528,
-      -23.5853032
-     ],
-     [
-      -46.6912235,
-      -23.585298
-     ],
-     [
-      -46.691184,
-      -23.5852906
-     ],
-     [
-      -46.6911804,
-      -23.58529
-     ],
-     [
-      -46.6911652,
-      -23.5853713
      ]
     ]
    }
@@ -3767,37 +3612,6 @@
      [
       -46.7039563,
       -23.6214544
-     ]
-    ]
-   }
-  },
-  {
-   "type": "Feature",
-   "id": "way/417893668",
-   "properties": {
-    "way": 417893668,
-    "role": "link",
-    "length_m": 13,
-    "edited_at": "2026-07-20T16:13:22Z",
-    "tags": {
-     "bicycle": "yes",
-     "highway": "footway"
-    },
-    "nodes": [
-     4183657839,
-     14029070244
-    ]
-   },
-   "geometry": {
-    "type": "LineString",
-    "coordinates": [
-     [
-      -46.7025832,
-      -23.6774633
-     ],
-     [
-      -46.7024566,
-      -23.6774577
      ]
     ]
    }
@@ -4893,136 +4707,6 @@
   },
   {
    "type": "Feature",
-   "id": "way/967742163",
-   "properties": {
-    "way": 967742163,
-    "role": "link",
-    "length_m": 1,
-    "edited_at": "2021-07-27T05:39:07Z",
-    "tags": {
-     "bicycle": "yes",
-     "covered": "yes",
-     "highway": "footway"
-    },
-    "nodes": [
-     8953028601,
-     8953028600
-    ]
-   },
-   "geometry": {
-    "type": "LineString",
-    "coordinates": [
-     [
-      -46.6912598,
-      -23.5853046
-     ],
-     [
-      -46.6912528,
-      -23.5853032
-     ]
-    ]
-   }
-  },
-  {
-   "type": "Feature",
-   "id": "way/967742164",
-   "properties": {
-    "way": 967742164,
-    "role": "link",
-    "length_m": 9,
-    "edited_at": "2021-07-27T05:39:07Z",
-    "tags": {
-     "bicycle": "yes",
-     "highway": "footway"
-    },
-    "nodes": [
-     4183572275,
-     8953028601
-    ]
-   },
-   "geometry": {
-    "type": "LineString",
-    "coordinates": [
-     [
-      -46.6913486,
-      -23.5853186
-     ],
-     [
-      -46.6912598,
-      -23.5853046
-     ]
-    ]
-   }
-  },
-  {
-   "type": "Feature",
-   "id": "way/967742169",
-   "properties": {
-    "way": 967742169,
-    "role": "link",
-    "length_m": 2,
-    "edited_at": "2021-07-27T05:39:07Z",
-    "tags": {
-     "bicycle": "yes",
-     "bridge": "viaduct",
-     "highway": "footway",
-     "layer": "1"
-    },
-    "nodes": [
-     8953028605,
-     1751860560
-    ]
-   },
-   "geometry": {
-    "type": "LineString",
-    "coordinates": [
-     [
-      -46.6904598,
-      -23.5848384
-     ],
-     [
-      -46.6904474,
-      -23.5848272
-     ]
-    ]
-   }
-  },
-  {
-   "type": "Feature",
-   "id": "way/967742170",
-   "properties": {
-    "way": 967742170,
-    "role": "link",
-    "length_m": 80,
-    "edited_at": "2021-07-27T05:39:07Z",
-    "tags": {
-     "bicycle": "yes",
-     "bridge": "viaduct",
-     "covered": "yes",
-     "highway": "footway",
-     "layer": "1"
-    },
-    "nodes": [
-     8953028606,
-     8953028605
-    ]
-   },
-   "geometry": {
-    "type": "LineString",
-    "coordinates": [
-     [
-      -46.6910581,
-      -23.5853067
-     ],
-     [
-      -46.6904598,
-      -23.5848384
-     ]
-    ]
-   }
-  },
-  {
-   "type": "Feature",
    "id": "way/975825545",
    "properties": {
     "way": 975825545,
@@ -5142,7 +4826,7 @@
     "way": 1025002474,
     "role": "west",
     "length_m": 21,
-    "edited_at": "2022-01-26T20:50:50Z",
+    "edited_at": "2026-09-22T01:46:19Z",
     "tags": {
      "access": "yes",
      "highway": "steps",
@@ -5152,6 +4836,7 @@
     },
     "nodes": [
      9451183729,
+     14205369357,
      9451183730,
      9451183731
     ]
@@ -5162,6 +4847,10 @@
      [
       -46.6918402,
       -23.586829
+     ],
+     [
+      -46.6918375,
+      -23.5868637
      ],
      [
       -46.6918301,
@@ -5414,6 +5103,101 @@
   },
   {
    "type": "Feature",
+   "id": "way/1055191640",
+   "properties": {
+    "way": 1055191640,
+    "role": "riverside",
+    "length_m": 884,
+    "edited_at": "2026-09-22T01:46:19Z",
+    "tags": {
+     "highway": "cycleway"
+    },
+    "nodes": [
+     9696073694,
+     9696073648,
+     9696073649,
+     9696073650,
+     9696073651,
+     9696073652,
+     9696073653,
+     9696073654,
+     9696073655,
+     9696073656,
+     9696073657,
+     9696073658,
+     9696073659,
+     9696073660,
+     9696073637
+    ]
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      -46.7260648,
+      -23.6497717
+     ],
+     [
+      -46.7259202,
+      -23.6499772
+     ],
+     [
+      -46.7257078,
+      -23.6503125
+     ],
+     [
+      -46.7252601,
+      -23.6508695
+     ],
+     [
+      -46.7241603,
+      -23.6521805
+     ],
+     [
+      -46.72296,
+      -23.6535775
+     ],
+     [
+      -46.7222641,
+      -23.6544176
+     ],
+     [
+      -46.7216296,
+      -23.6551853
+     ],
+     [
+      -46.7214131,
+      -23.6554442
+     ],
+     [
+      -46.721326,
+      -23.6555567
+     ],
+     [
+      -46.7212685,
+      -23.6556619
+     ],
+     [
+      -46.7212012,
+      -23.6558651
+     ],
+     [
+      -46.7211516,
+      -23.6560248
+     ],
+     [
+      -46.7211437,
+      -23.6561246
+     ],
+     [
+      -46.7211603,
+      -23.6562408
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
    "id": "way/1055191641",
    "properties": {
     "way": 1055191641,
@@ -5484,8 +5268,8 @@
    "properties": {
     "way": 1104456716,
     "role": "trunk",
-    "length_m": 7470,
-    "edited_at": "2025-06-12T19:58:21Z",
+    "length_m": 7469,
+    "edited_at": "2026-09-22T01:46:19Z",
     "tags": {
      "bicycle": "designated",
      "bicycle:conditional": "yes @ (05:30-18:30)",
@@ -5549,6 +5333,7 @@
      656096891,
      656096892,
      4183657839,
+     14205369364,
      656096895,
      656112602,
      12911260773,
@@ -5561,6 +5346,7 @@
      656112622,
      656112624,
      656112625,
+     14205369360,
      656112627,
      656112629,
      656112631,
@@ -5778,6 +5564,10 @@
       -23.6774633
      ],
      [
+      -46.7025088,
+      -23.6775451
+     ],
+     [
       -46.702399,
       -23.6776657
      ],
@@ -5822,12 +5612,16 @@
       -23.6865231
      ],
      [
-      -46.6956035,
-      -23.6870758
+      -46.6955623,
+      -23.6870755
      ],
      [
-      -46.6952218,
-      -23.6876911
+      -46.6954811,
+      -23.6872108
+     ],
+     [
+      -46.6951594,
+      -23.6876678
      ],
      [
       -46.6947808,
@@ -6734,7 +6528,7 @@
     "way": 1126024470,
     "role": "west",
     "length_m": 1337,
-    "edited_at": "2025-03-14T16:37:45Z",
+    "edited_at": "2026-09-22T01:46:19Z",
     "tags": {
      "bicycle": "designated",
      "foot": "yes",
@@ -6757,6 +6551,7 @@
      3010493497,
      4432628427,
      3010493499,
+     14205369366,
      3010493500,
      9696073694,
      3010493501,
@@ -6822,6 +6617,10 @@
      [
       -46.7267086,
       -23.6481756
+     ],
+     [
+      -46.726699,
+      -23.6482089
      ],
      [
       -46.7264368,
@@ -7583,11 +7382,11 @@
     "way": 1232030302,
     "role": "link",
     "length_m": 4,
-    "edited_at": "2023-12-17T21:45:31Z",
+    "edited_at": "2026-09-22T01:46:19Z",
     "tags": {
      "bicycle": "dismount",
      "foot": "yes",
-     "highway": "footway",
+     "highway": "cycleway",
      "lit": "no",
      "segregated": "yes"
     },
@@ -7617,11 +7416,11 @@
     "way": 1232030303,
     "role": "link",
     "length_m": 27,
-    "edited_at": "2023-12-17T21:45:31Z",
+    "edited_at": "2026-09-22T01:46:19Z",
     "tags": {
      "bicycle": "dismount",
      "foot": "yes",
-     "highway": "footway",
+     "highway": "cycleway",
      "lit": "no",
      "segregated": "yes"
     },
@@ -7651,14 +7450,14 @@
     "way": 1232030304,
     "role": "link",
     "length_m": 94,
-    "edited_at": "2026-09-21T19:55:31Z",
+    "edited_at": "2026-09-22T01:46:19Z",
     "tags": {
      "access:conditional": "no @ (2026 Sep 21+)",
      "bicycle": "dismount",
      "bridge": "yes",
      "bridge:structure": "floating",
      "foot": "yes",
-     "highway": "footway",
+     "highway": "cycleway",
      "lit": "no",
      "name": "Passarela Flutuante da Cidade Jardim",
      "segregated": "yes"
@@ -9062,70 +8861,6 @@
   },
   {
    "type": "Feature",
-   "id": "way/1541034749",
-   "properties": {
-    "way": 1541034749,
-    "role": "link",
-    "length_m": 2,
-    "edited_at": "2026-07-20T16:13:22Z",
-    "tags": {
-     "bicycle": "yes",
-     "highway": "footway"
-    },
-    "nodes": [
-     14029070243,
-     2367176643
-    ]
-   },
-   "geometry": {
-    "type": "LineString",
-    "coordinates": [
-     [
-      -46.7023623,
-      -23.6774535
-     ],
-     [
-      -46.7023449,
-      -23.6774527
-     ]
-    ]
-   }
-  },
-  {
-   "type": "Feature",
-   "id": "way/1541034750",
-   "properties": {
-    "way": 1541034750,
-    "role": "link",
-    "length_m": 10,
-    "edited_at": "2026-07-20T16:13:22Z",
-    "tags": {
-     "bicycle": "yes",
-     "bridge": "yes",
-     "highway": "footway",
-     "layer": "1"
-    },
-    "nodes": [
-     14029070244,
-     14029070243
-    ]
-   },
-   "geometry": {
-    "type": "LineString",
-    "coordinates": [
-     [
-      -46.7024566,
-      -23.6774577
-     ],
-     [
-      -46.7023623,
-      -23.6774535
-     ]
-    ]
-   }
-  },
-  {
-   "type": "Feature",
    "id": "way/1561122185",
    "properties": {
     "way": 1561122185,
@@ -9156,6 +8891,77 @@
      [
       -46.7181854,
       -23.6337722
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1561248479",
+   "properties": {
+    "way": 1561248479,
+    "role": "access",
+    "length_m": 12,
+    "edited_at": "2026-09-22T01:46:19Z",
+    "tags": {
+     "bicycle": "designated",
+     "foot": "designated",
+     "highway": "cycleway",
+     "name": "Acesso CPTM Jurubatuba"
+    },
+    "nodes": [
+     14205369362,
+     14205369363,
+     14205369364
+    ]
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      -46.7024073,
+      -23.6774998
+     ],
+     [
+      -46.7024596,
+      -23.6775182
+     ],
+     [
+      -46.7025088,
+      -23.6775451
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "way/1561248481",
+   "properties": {
+    "way": 1561248481,
+    "role": "access",
+    "length_m": 17,
+    "edited_at": "2026-09-22T01:46:19Z",
+    "tags": {
+     "bridge": "yes",
+     "highway": "cycleway",
+     "layer": "1",
+     "name": "Acesso João Dias"
+    },
+    "nodes": [
+     14205369367,
+     9227186023
+    ]
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      -46.7236499,
+      -23.639845
+     ],
+     [
+      -46.7235089,
+      -23.6399232
      ]
     ]
    }
