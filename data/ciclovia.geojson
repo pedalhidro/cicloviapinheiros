@@ -1,7 +1,7 @@
 {
  "type": "FeatureCollection",
  "meta": {
-  "changed_at": "2026-09-23T04:46:08Z",
+  "changed_at": "2026-09-23T14:43:36Z",
   "attribution": "© OpenStreetMap contributors (ODbL)",
   "source": "Overpass API",
   "query": "[out:json][timeout:90];\nrel(id:2029967,5245330)->.rels;\n.rels out body;\nway[\"waterway\"~\"^(river|canal)$\"][\"name\"~\"Pinheiros|Jurubatuba\",i](-23.715,-46.78,-23.5,-46.65)->.rio;\n(\n  way[\"highway\"=\"cycleway\"](-23.715,-46.78,-23.5,-46.65);\n  way[\"highway\"~\"^(footway|path|pedestrian|steps)$\"][\"bicycle\"~\"^(yes|designated|dismount|permissive)$\"](-23.715,-46.78,-23.5,-46.65);\n)->.cand;\n(\n  way(r.rels);\n  way[\"name\"~\"Ciclovia (do )?Rio Pinheiros\",i](-23.715,-46.78,-23.5,-46.65);\n  way.cand(around.rio:150);\n)->.sel;\n.sel out meta geom;\nnode(w.sel)[\"barrier\"];\nout meta;\n"
@@ -5263,7 +5263,7 @@
     "way": 1104456716,
     "role": "trunk",
     "length_m": 7469,
-    "edited_at": "2026-09-22T01:46:19Z",
+    "edited_at": "2026-09-23T14:42:18Z",
     "tags": {
      "bicycle": "designated",
      "bicycle:conditional": "yes @ (05:30-18:30)",
@@ -5340,7 +5340,9 @@
      656112622,
      656112624,
      656112625,
+     14209512416,
      14205369360,
+     14209512417,
      656112627,
      656112629,
      656112631,
@@ -5610,8 +5612,16 @@
       -23.6870755
      ],
      [
+      -46.6955015,
+      -23.6871768
+     ],
+     [
       -46.6954811,
       -23.6872108
+     ],
+     [
+      -46.6951918,
+      -23.6876218
      ],
      [
       -46.6951594,
@@ -8997,6 +9007,46 @@
     "coordinates": [
      -46.711818,
      -23.6653911
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/14209512416",
+   "properties": {
+    "node": 14209512416,
+    "role": "gate",
+    "edited_at": "2026-09-23T14:42:18Z",
+    "tags": {
+     "access": "private",
+     "barrier": "gate"
+    }
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -46.6955015,
+     -23.6871768
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "node/14209512417",
+   "properties": {
+    "node": 14209512417,
+    "role": "gate",
+    "edited_at": "2026-09-23T14:42:18Z",
+    "tags": {
+     "access": "private",
+     "barrier": "gate"
+    }
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -46.6951918,
+     -23.6876218
     ]
    }
   }
