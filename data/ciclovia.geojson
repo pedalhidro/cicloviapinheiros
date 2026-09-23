@@ -1,7 +1,7 @@
 {
  "type": "FeatureCollection",
  "meta": {
-  "changed_at": "2026-09-22T04:57:51Z",
+  "changed_at": "2026-09-23T04:46:08Z",
   "attribution": "© OpenStreetMap contributors (ODbL)",
   "source": "Overpass API",
   "query": "[out:json][timeout:90];\nrel(id:2029967,5245330)->.rels;\n.rels out body;\nway[\"waterway\"~\"^(river|canal)$\"][\"name\"~\"Pinheiros|Jurubatuba\",i](-23.715,-46.78,-23.5,-46.65)->.rio;\n(\n  way[\"highway\"=\"cycleway\"](-23.715,-46.78,-23.5,-46.65);\n  way[\"highway\"~\"^(footway|path|pedestrian|steps)$\"][\"bicycle\"~\"^(yes|designated|dismount|permissive)$\"](-23.715,-46.78,-23.5,-46.65);\n)->.cand;\n(\n  way(r.rels);\n  way[\"name\"~\"Ciclovia (do )?Rio Pinheiros\",i](-23.715,-46.78,-23.5,-46.65);\n  way.cand(around.rio:150);\n)->.sel;\n.sel out meta geom;\nnode(w.sel)[\"barrier\"];\nout meta;\n"
@@ -1004,7 +1004,7 @@
     "way": 51392253,
     "role": "trunk",
     "length_m": 6982,
-    "edited_at": "2026-09-22T01:46:19Z",
+    "edited_at": "2026-09-22T22:21:47Z",
     "tags": {
      "bicycle": "designated",
      "bicycle:conditional": "yes @ (05:30-18:30)",
@@ -1015,8 +1015,7 @@
      "oneway": "no",
      "segregated": "yes",
      "source": "Shapefile CET 2021",
-     "surface": "paved",
-     "temporary:access": "no @ (2021-08-18 - 2021-12-31)"
+     "surface": "paved"
     },
     "nodes": [
      1634755744,
@@ -1067,7 +1066,6 @@
      12173905476,
      4143521766,
      656086393,
-     12663013514,
      6989789729,
      656086394,
      6989789730,
@@ -1124,7 +1122,6 @@
      6989789808,
      6989789805,
      656092351,
-     12663036359,
      656092352,
      656092354,
      1749725633,
@@ -1349,10 +1346,6 @@
       -23.6118677
      ],
      [
-      -46.6991318,
-      -23.6133102
-     ],
-     [
       -46.6993379,
       -23.6142876
      ],
@@ -1575,10 +1568,6 @@
      [
       -46.7106373,
       -23.6261088
-     ],
-     [
-      -46.7107806,
-      -23.6262302
      ],
      [
       -46.7111437,
@@ -2267,7 +2256,7 @@
     "way": 297200000,
     "role": "west",
     "length_m": 6152,
-    "edited_at": "2025-03-20T02:03:04Z",
+    "edited_at": "2026-09-23T01:49:44Z",
     "tags": {
      "bicycle": "designated",
      "foot": "yes",
@@ -2298,6 +2287,7 @@
      10296720153,
      12601537309,
      12682607560,
+     14208072481,
      12682607559,
      3010493447,
      10296720128,
@@ -2464,6 +2454,10 @@
      [
       -46.695749,
       -23.5972063
+     ],
+     [
+      -46.6957306,
+      -23.5973589
      ],
      [
       -46.6957153,
@@ -9003,46 +8997,6 @@
     "coordinates": [
      -46.711818,
      -23.6653911
-    ]
-   }
-  },
-  {
-   "type": "Feature",
-   "id": "node/12663013514",
-   "properties": {
-    "node": 12663013514,
-    "role": "gate",
-    "edited_at": "2025-03-14T16:32:26Z",
-    "tags": {
-     "access": "private",
-     "barrier": "gate"
-    }
-   },
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -46.6991318,
-     -23.6133102
-    ]
-   }
-  },
-  {
-   "type": "Feature",
-   "id": "node/12663036359",
-   "properties": {
-    "node": 12663036359,
-    "role": "gate",
-    "edited_at": "2025-03-14T16:37:45Z",
-    "tags": {
-     "access": "private",
-     "barrier": "gate"
-    }
-   },
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -46.7107806,
-     -23.6262302
     ]
    }
   }
