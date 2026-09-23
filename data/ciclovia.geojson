@@ -1,7 +1,7 @@
 {
  "type": "FeatureCollection",
  "meta": {
-  "changed_at": "2026-09-23T14:43:36Z",
+  "changed_at": "2026-09-23T14:54:00Z",
   "attribution": "© OpenStreetMap contributors (ODbL)",
   "source": "Overpass API",
   "query": "[out:json][timeout:90];\nrel(id:2029967,5245330)->.rels;\n.rels out body;\nway[\"waterway\"~\"^(river|canal)$\"][\"name\"~\"Pinheiros|Jurubatuba\",i](-23.715,-46.78,-23.5,-46.65)->.rio;\n(\n  way[\"highway\"=\"cycleway\"](-23.715,-46.78,-23.5,-46.65);\n  way[\"highway\"~\"^(footway|path|pedestrian|steps)$\"][\"bicycle\"~\"^(yes|designated|dismount|permissive)$\"](-23.715,-46.78,-23.5,-46.65);\n)->.cand;\n(\n  way(r.rels);\n  way[\"name\"~\"Ciclovia (do )?Rio Pinheiros\",i](-23.715,-46.78,-23.5,-46.65);\n  way.cand(around.rio:150);\n)->.sel;\n.sel out meta geom;\nnode(w.sel)[\"barrier\"];\nout meta;\n"
@@ -1683,9 +1683,10 @@
     "way": 126052486,
     "role": "access",
     "length_m": 654,
-    "edited_at": "2026-09-21T19:55:31Z",
+    "edited_at": "2026-09-23T14:52:09Z",
     "tags": {
      "bicycle": "designated",
+     "bicycle:conditional": "yes @ (05:30-18:30)",
      "foot": "yes",
      "highway": "cycleway",
      "name": "Acesso à Ciclovia do Rio Pinheiros",
